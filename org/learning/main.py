@@ -1,6 +1,12 @@
+import string
 from string import Template
 import itertools
-
+import collections
+from collections import defaultdict
+from collections import Counter
+from collections import OrderedDict
+from collections import deque
+from enum import Enum, unique
 
 #class SampleClass:
 # Empty class thingy
@@ -14,6 +20,19 @@ class Address:
 
     def __str__(self):
         return f"Address(name={self.name}, x={self.x}, y={self.y})"
+
+    def __bytes__(self):
+        pass
+
+    def __repr__(self):
+        pass
+
+    def __getattr__(self, item):
+        if item == "some_param_name":
+            return ("A NEW TUPLE", 23)
+        else:
+            raise AttributeError
+
 
 def oop():
     an_andress = Address(name="Donegal Road", x=26, y=32)
@@ -197,6 +216,106 @@ def lambda_functions():
 def keyword_only_function(arg1, arg2, *, suppressExceptions=False):
     pass
 
+def basic_collections():
+    list = [] # List
+    tuple = () # Tuple, immutable
+    set = {} # Distinct
+    map = [] # Dictonary key-value pair
+
+def advanced_collections():
+    Point = collections.namedtuple("Point", "x y")
+    p1 = Point(10, 20)
+    p2 = Point(30, 40)
+    print(p1.x, p2.y)
+
+    # Replacement
+    p1 = p1._replace(x=100)
+    print(p1)
+
+    # Default Dic
+    # Adds the key when accessed
+    fruits = [
+        "apple", "pear", "orange", "banana",
+        "apple", "grape", "banana", "tangerine"
+    ]
+
+    fruit_counter = defaultdict(int)
+
+    for fruit in fruits:
+        fruit_counter[fruit] += 1
+
+    for (k, v) in fruit_counter.items():
+        print(f"Key {k} = {v}")
+
+    # Counter
+    class1 = [
+        "Bob", "Becky", "Chad" "Darcy", "Frank", "Hannah", "Kevin", "James",
+        "James", "Melanie", "Penie", "Steve"
+    ]
+
+    class2 = [
+        "Bob", "Becky", "Chad" "Darcy", "Frank", "Hannah", "Kevin", "James",
+        "James", "Melanie", "Penie", "Steve", "Bob", "Becky", "Chad" "Darcy",
+        "Frank", "Hannah", "Kevin", "James", "James", "Melanie", "Penie", "Steve"
+    ]
+
+    c1 = Counter(class1)
+    c2 = Counter(class2)
+
+    print(c2["James"], " Named James.")
+
+    print(sum(c1.values()))
+    print((c2.most_common()))
+
+
+    print(c1 & c2)
+
+    # Ordered Dictionary
+    sports_teams = [
+        ("Royals", (18, 12)), ("Rockets", (24, 6)),
+        ("Cardinals", (20, 10)), ("Dragons", (22, 8)),
+        ("Kings", (15, 15)), ("Chargers", (20, 10)),
+    ]
+
+    sorted_teams = sorted(sports_teams, key=lambda t: [1][0], reverse=True)
+    print(sorted_teams)
+
+    teams = OrderedDict(sorted_teams)
+    print(teams)
+
+    tm, wl = teams.popitem(False)
+    print("Top team: ", tm, wl)
+
+    # Deque
+    d = collections.deque(string.ascii_lowercase)
+
+    print("Item count:", str(len(d)))
+
+    for elem in d:
+        print(elem, end=",")
+
+    d.pop()
+    d.popleft()
+
+    d.append(2)
+    d.appendleft(1)
+
+@unique
+class Fruit(Enum):
+    APPLE = 1
+    BANANA = 2
+    ORANGE = 3
+    TOMATO = 4
+
+def advanced_classes():
+    # Enums
+    print(Fruit.APPLE)
+    print(type(Fruit.APPLE))
+    print(repr(Fruit.APPLE))
+    print(Fruit.APPLE.name)
+    print(Fruit.APPLE.value)
+
+
 def main():
     truthy_values("TestData1")
     strings_vs_bytes()
@@ -211,6 +330,8 @@ def main():
     print(function_with_variable_params(4, 7))
     lambda_functions()
     keyword_only_function(1, 2, suppressExceptions=True)
+    advanced_collections()
+    advanced_classes()
 
 
 main()
