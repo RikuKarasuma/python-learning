@@ -7,6 +7,7 @@ from collections import Counter
 from collections import OrderedDict
 from collections import deque
 from enum import Enum, unique
+import logging
 
 #class SampleClass:
 # Empty class thingy
@@ -32,6 +33,9 @@ class Address:
             return ("A NEW TUPLE", 23)
         else:
             raise AttributeError
+
+    def __eq__(self, other):
+        return self.name == other.name
 
 
 def oop():
@@ -315,6 +319,57 @@ def advanced_classes():
     print(Fruit.APPLE.name)
     print(Fruit.APPLE.value)
 
+def comparisons():
+    address_1 = Address(name="address", x=1, y=2)
+    address_2 = Address(name="address", x=4, y=3)
+    print(address_1 == address_2)
+
+def logging1():
+    fmtstr = "%(asctime)s: %(levelname)s: %(funcName)s Line: %(lineno)d %(message)s"
+    logging.basicConfig(level=logging.DEBUG, filename="./output.log", format=fmtstr, filemode="w")
+
+    logging.debug("This is useful debugging info")
+    logging.info("General info")
+    logging.warning("A warning message")
+    logging.error("Error message")
+    logging.critical("Serious error message occurred")
+
+    extData = {
+        'user': 'joem@example.com'
+    }
+    logging.critical("ERROR: ", extra=extData)
+
+def comprehensions():
+    """Example"""
+    # list ( map ( fahrenheitToCelsius, [32, 65, 104, 212]))
+    # shortened
+    # [(t * 9/5) + 32 for t in [32, 65, 104, 212] ]
+    evens = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+    odds = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+
+    evenSquared = list(
+        map(lambda e: e**2, filter(lambda e: 4 < e < 16, evens))
+    )
+    print(evenSquared)
+
+    # comprehension ways
+    evenSquared1 = [e ** 2 for e in evens]
+    print(evenSquared1)
+
+    evenSquared2 = [e ** 2 for e in evens if 4 < e < 16]
+    print(evenSquared2)
+
+    tempDicct = {t: (t*9/5) + 32 for t in odds if t <= 11}
+    print(tempDicct)
+
+    oddsSet = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 19, 1, 3, 5, 7]
+    unique = {(t*9/5) + 32 for t in oddsSet}
+    print(unique)
+
+
+
+
+
 
 def main():
     truthy_values("TestData1")
@@ -332,6 +387,9 @@ def main():
     keyword_only_function(1, 2, suppressExceptions=True)
     advanced_collections()
     advanced_classes()
+    comparisons()
+    logging1()
+    comprehensions()
 
 
 main()
